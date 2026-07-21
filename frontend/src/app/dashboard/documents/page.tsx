@@ -31,6 +31,7 @@ export default function DocumentsPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchDocuments();
   }, []);
 
@@ -60,8 +61,8 @@ export default function DocumentsPage() {
     try {
       await apiClient.uploadDocument(file);
       await fetchDocuments(); // Refresh list after upload
-    } catch (err: any) {
-      setError(err.message || "Failed to upload document");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to upload document");
     } finally {
       setIsUploading(false);
       if (fileInputRef.current) {

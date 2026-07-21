@@ -9,15 +9,19 @@ class QdrantService:
         self._ensure_collection()
 
     def _ensure_collection(self):
-        collections = self.client.get_collections().collections
-        exists = any(c.name == self.collection_name for c in collections)
-        if not exists:
-            # Assuming using Gemini embeddings with 768 dimensions, or OpenAI with 1536
-            # We'll use 768 as default for Gemini 
-            self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=VectorParams(size=768, distance=Distance.COSINE),
-            )
+        try:
+            collections = self.client.get_collections().collections
+            exists = any(c.name == self.collection_name for c in collections)
+            if not exists:
+                # Assuming using Gemini embeddings with 768 dimensions, or OpenAI with 1536
+                # We'll use 768 as default for Gemini 
+                self.client.create_collection(
+                    collection_name=self.collection_name,
+                    vectors_config=VectorParams(size=768, distance=Distance.COSINE),
+                )
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).error(f"Qdrant connection error on startup: {e}. Ensure Qdrant is running.")
 
     def insert_vectors(self, points):
         self.client.upsert(

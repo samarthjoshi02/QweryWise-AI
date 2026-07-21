@@ -24,8 +24,8 @@ def ensure_bucket_exists():
         if not client.bucket_exists(MINIO_BUCKET_NAME):
             client.make_bucket(MINIO_BUCKET_NAME)
             logger.info(f"Created bucket: {MINIO_BUCKET_NAME}")
-    except S3Error as e:
-        logger.error(f"MinIO error: {e}")
+    except Exception as e:
+        logger.error(f"MinIO connection error on startup: {e}. Ensure MinIO is running and credentials are correct.")
 
 # Initialize bucket on startup
 ensure_bucket_exists()

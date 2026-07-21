@@ -76,9 +76,19 @@ def process_document(file_name: str, document_id: int):
         # Clean up temp file
         os.remove(temp_file_path)
         
-        # TODO: Update document status in Postgres to 'Indexed'
+        # Update document status in mock db to 'Indexed'
+        from app.api.endpoints.documents import mock_documents
+        for doc in mock_documents:
+            if doc["id"] == document_id:
+                doc["status"] = "Indexed"
+                break
         
     except Exception as e:
         logger.error(f"Failed to process {file_name}: {e}")
-        # TODO: Update document status in Postgres to 'Failed'
+        # Update document status in mock db to 'Failed'
+        from app.api.endpoints.documents import mock_documents
+        for doc in mock_documents:
+            if doc["id"] == document_id:
+                doc["status"] = "Failed"
+                break
         raise e

@@ -169,7 +169,9 @@ export default function DashboardLayout({
         
         {/* Main Content Area */}
         <main className="flex-1 p-4 lg:p-6 overflow-auto bg-background/50">
-          {children}
+          <React.Suspense fallback={<div className="flex items-center justify-center h-full">Loading...</div>}>
+            {children}
+          </React.Suspense>
         </main>
       </div>
     </div>

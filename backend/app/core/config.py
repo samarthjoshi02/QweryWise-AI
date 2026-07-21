@@ -1,3 +1,4 @@
+import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
@@ -6,24 +7,24 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Postgres
-    POSTGRES_SERVER: str = "localhost"
-    POSTGRES_USER: str = "querywise"
-    POSTGRES_PASSWORD: str = "password"
-    POSTGRES_DB: str = "querywise_db"
+    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
+    POSTGRES_USER: str = os.getenv("POSTGRES_USER", "querywise")
+    POSTGRES_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "password")
+    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "querywise_db")
     
     # Qdrant
-    QDRANT_URL: str = "http://localhost:6333"
-    QDRANT_COLLECTION_NAME: str = "documents"
+    QDRANT_URL: str = os.getenv("QDRANT_URL", "http://localhost:6333")
+    QDRANT_COLLECTION_NAME: str = os.getenv("QDRANT_COLLECTION_NAME", "documents")
     
     # MinIO
-    MINIO_URL: str = "localhost:9000"
-    MINIO_ACCESS_KEY: str = "admin"
-    MINIO_SECRET_KEY: str = "password123"
-    MINIO_BUCKET_NAME: str = "querywise-docs"
+    MINIO_URL: str = os.getenv("MINIO_URL", "localhost:9000")
+    MINIO_ACCESS_KEY: str = os.getenv("MINIO_ACCESS_KEY", "admin")
+    MINIO_SECRET_KEY: str = os.getenv("MINIO_SECRET_KEY", "password123")
+    MINIO_BUCKET_NAME: str = os.getenv("MINIO_BUCKET_NAME", "querywise-docs")
 
     # LLM
-    GOOGLE_API_KEY: str = ""
-    OPENAI_API_KEY: str = ""
+    GOOGLE_API_KEY: str = os.getenv("GOOGLE_API_KEY", "")
+    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:

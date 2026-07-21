@@ -54,6 +54,8 @@ type Message = {
 }
 
 
+import { apiClient } from "@/lib/api-client"
+
 export default function ChatPage() {
   const [messages, setMessages] = React.useState<Message[]>([
     {
@@ -76,16 +78,7 @@ export default function ChatPage() {
     setIsTyping(true)
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/chat/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: currentInput })
-      });
-
-      if (!res.ok) throw new Error("Failed to fetch response");
-      const data = await res.json();
+      const data = await apiClient.chat(currentInput);
 
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),

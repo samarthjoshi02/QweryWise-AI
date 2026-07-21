@@ -4,7 +4,7 @@ from app.core.config import settings
 
 class QdrantService:
     def __init__(self):
-        self.client = QdrantClient(url=settings.QDRANT_URL)
+        self.client = QdrantClient(url=settings.QDRANT_URL, check_compatibility=False)
         self.collection_name = settings.QDRANT_COLLECTION_NAME
         self._ensure_collection()
 

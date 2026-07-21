@@ -14,8 +14,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "QueryWise AI | Never Guess. Always Verify.",
-  description: "Enterprise Self-Correcting RAG platform.",
+  title: "QweryWise-AI | Enterprise Self-Correcting RAG",
+  description: "Enterprise Self-Correcting RAG platform. Upload documents and get verifiable, grounded AI answers.",
+  keywords: ["AI", "RAG", "Enterprise", "Self-Correcting", "FastAPI", "Next.js"],
+  authors: [{ name: "QweryWise-AI Team" }],
+  openGraph: {
+    title: "QweryWise-AI",
+    description: "Enterprise Self-Correcting RAG platform.",
+    url: "https://qwerywise-ai.com",
+    siteName: "QweryWise-AI",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

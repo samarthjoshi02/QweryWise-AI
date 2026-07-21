@@ -25,6 +25,17 @@ export default function DocumentsPage() {
     fetchDocuments();
   }, []);
 
+  // Auto-refresh if any document is still processing
+  useEffect(() => {
+    const isProcessing = documents.some(doc => doc.status === 'Processing');
+    if (isProcessing) {
+      const timer = setTimeout(() => {
+        fetchDocuments();
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [documents]);
+
   const fetchDocuments = async () => {
     try {
       const data = await apiClient.getDocuments();

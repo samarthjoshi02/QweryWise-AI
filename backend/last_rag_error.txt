@@ -1,0 +1,57 @@
+Traceback (most recent call last):
+  File "D:\QweryWise AI\backend\app\services\rag_pipeline.py", line 69, in process_document
+    vector_store = QdrantVectorStore.from_documents(
+        chunks,
+    ...<2 lines>...
+        collection_name=QDRANT_COLLECTION_NAME,
+    )
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\langchain_core\vectorstores\base.py", line 814, in from_documents
+    return cls.from_texts(texts, embedding, metadatas=metadatas, **kwargs)
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\langchain_qdrant\qdrant.py", line 412, in from_texts
+    qdrant = cls.construct_instance(
+        embedding,
+    ...<14 lines>...
+        validate_collection_config,
+    )
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\langchain_qdrant\qdrant.py", line 923, in construct_instance
+    collection_exists = client.collection_exists(collection_name)
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\qdrant_client.py", line 1603, in collection_exists
+    return self._client.collection_exists(collection_name=collection_name, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\qdrant_remote.py", line 1897, in collection_exists
+    result: models.CollectionExistence | None = self.http.collections_api.collection_exists(
+                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        collection_name=collection_name
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ).result
+    ^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\http\api\collections_api.py", line 438, in collection_exists
+    return self._build_for_collection_exists(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        collection_name=collection_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\http\api\collections_api.py", line 67, in _build_for_collection_exists
+    return self.api_client.request(
+           ~~~~~~~~~~~~~~~~~~~~~~~^
+        type_=m.InlineResponse2008,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        path_params=path_params,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\http\api_client.py", line 95, in request
+    return self.send(request, type_)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\QweryWise AI\backend\venv\Lib\site-packages\qdrant_client\http\api_client.py", line 130, in send
+    raise UnexpectedResponse.for_response(response)
+qdrant_client.http.exceptions.UnexpectedResponse: Unexpected Response: 404 (Not Found)
+Raw response content:
+b''
+
+Exception string: Unexpected Response: 404 (Not Found)
+Raw response content:
+b''

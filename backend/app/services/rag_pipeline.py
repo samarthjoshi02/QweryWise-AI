@@ -9,6 +9,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_qdrant import QdrantVectorStore
 
 from app.services.storage_service import client as minio_client, MINIO_BUCKET_NAME
+from app.services.qdrant_service import qdrant_service
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +38,11 @@ def process_document(file_name: str, document_id: int):
     logger.info(f"Starting processing for {file_name}")
     try:
         # 1. Download file from MinIO to a temporary file
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-            minio_client.fget_object(MINIO_BUCKET_NAME, file_name, temp_file.name)
-            temp_file_path = temp_file.name
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+        temp_file.close() # Close it so MinIO can write to it (Windows limitation)
+        temp_file_path = temp_file.name
+        
+        minio_client.fget_object(MINIO_BUCKET_NAME, file_name, temp_file_path)
 
         # 2. Parse the PDF
         logger.info(f"Parsing PDF: {file_name}")
@@ -85,6 +88,11 @@ def process_document(file_name: str, document_id: int):
         
     except Exception as e:
         logger.error(f"Failed to process {file_name}: {e}")
+        import traceback
+        with open("last_rag_error.txt", "w") as err_file:
+            traceback.print_exc(file=err_file)
+            err_file.write(f"\nException string: {str(e)}")
+            
         # Update document status in mock db to 'Failed'
         from app.api.endpoints.documents import mock_documents
         for doc in mock_documents:

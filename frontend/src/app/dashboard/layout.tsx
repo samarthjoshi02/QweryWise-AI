@@ -45,6 +45,33 @@ const navItems = [
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   { name: 'Help', href: '/dashboard/help', icon: HelpCircle },
 ]
+const SidebarContent = ({ pathname }: { pathname: string }) => (
+  <div className="flex h-full flex-col gap-2">
+    <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+      <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
+        <BrainCircuit className="h-6 w-6" />
+        <span className="">QueryWise AI</span>
+      </Link>
+    </div>
+    <div className="flex-1 overflow-auto py-2">
+      <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-1">
+        {navItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary hover:bg-muted ${
+              pathname === item.href ? "bg-muted text-primary" : "text-muted-foreground"
+            }`}
+          >
+            <item.icon className="h-4 w-4" />
+            {item.name}
+          </Link>
+        ))}
+      </nav>
+    </div>
+  </div>
+)
+
 
 export default function DashboardLayout({
   children,
@@ -55,38 +82,13 @@ export default function DashboardLayout({
   const { setTheme, theme } = useTheme()
   const pathname = usePathname()
 
-  const SidebarContent = () => (
-    <div className="flex h-full flex-col gap-2">
-      <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <Link href="/" className="flex items-center gap-2 font-semibold text-primary">
-          <BrainCircuit className="h-6 w-6" />
-          <span className="">QueryWise AI</span>
-        </Link>
-      </div>
-      <div className="flex-1 overflow-auto py-2">
-        <nav className="grid items-start px-2 text-sm font-medium lg:px-4 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary hover:bg-muted ${
-                pathname === item.href ? "bg-muted text-primary" : "text-muted-foreground"
-              }`}
-            >
-              <item.icon className="h-4 w-4" />
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </div>
-  )
+
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       {/* Desktop Sidebar */}
       <div className="hidden border-r bg-muted/40 md:block">
-        <SidebarContent />
+        <SidebarContent pathname={pathname} />
       </div>
 
       <div className="flex flex-col">
@@ -104,7 +106,7 @@ export default function DashboardLayout({
                 <span className="sr-only">Toggle navigation menu</span>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col p-0 w-64">
-              <SidebarContent />
+              <SidebarContent pathname={pathname} />
             </SheetContent>
           </Sheet>
           

@@ -16,10 +16,19 @@ interface DocumentRecord {
 }
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState<any[]>([]);
+  const [documents, setDocuments] = useState<DocumentRecord[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const fetchDocuments = async () => {
+    try {
+      const data = await apiClient.getDocuments();
+      setDocuments(data);
+    } catch (err) {
+      console.error("Failed to fetch documents", err);
+    }
+  };
 
   useEffect(() => {
     fetchDocuments();
@@ -35,15 +44,6 @@ export default function DocumentsPage() {
       return () => clearTimeout(timer);
     }
   }, [documents]);
-
-  const fetchDocuments = async () => {
-    try {
-      const data = await apiClient.getDocuments();
-      setDocuments(data);
-    } catch (err) {
-      console.error("Failed to fetch documents", err);
-    }
-  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
